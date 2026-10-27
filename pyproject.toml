@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crawl4ai-proxy"
+version = "0.1.0"
+description = "A small proxy that lets Open WebUI use Crawl4AI as an external web loader"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "crawl4ai-proxy contributors" }]
+dependencies = [
+    "fastapi>=0.115,<1",
+    "httpx>=0.27,<1",
+    "uvicorn>=0.30,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+    "pytest-asyncio>=0.24,<1",
+    "ruff>=0.8,<1",
+]
+
+[project.scripts]
+crawl4ai-proxy = "crawl4ai_proxy.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/crawl4ai_proxy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

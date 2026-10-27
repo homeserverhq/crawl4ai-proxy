@@ -1,0 +1,33 @@
+services:
+  crawl4ai-proxy:
+    build: .
+    image: crawl4ai-proxy:local
+    environment:
+      LISTEN_PORT: 8000
+      CRAWL4AI_URL: http://crawl4ai:11235
+      # CRAWL4AI_API_KEY: ${CRAWL4AI_API_KEY:-}
+      # PROXY_API_KEY: ${PROXY_API_KEY:-}
+      MARKDOWN_MODE: auto
+    networks:
+      - openwebui
+    depends_on:
+      - crawl4ai
+    restart: unless-stopped
+
+  crawl4ai:
+    image: ghcr.io/homeserverhq/crawl4ai:v0.9.5
+    shm_size: 1g
+    networks:
+      - openwebui
+    restart: unless-stopped
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "8080:8080"
+    networks:
+      - openwebui
+    restart: unless-stopped
+
+networks:
+  openwebui:
